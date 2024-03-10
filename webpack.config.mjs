@@ -1,43 +1,38 @@
 import path from "node:path";
 import {fileURLToPath} from 'node:url';
-import htmlConfig from "./webpack-config/html-config.mjs";
+import htmlPluginsConfig from "./webpack-config/html-plugins-config.mjs";
+import stylePluginsConfig from "./webpack-config/style-plugins-config.mjs";
+import htmlLoadersConfig from "./webpack-config/html-loaders-config.mjs";
+import styleLoadersConfig from "./webpack-config/style-loaders-config.mjs";
+import commonConfig from "./webpack-config/common-config.mjs";
 
-
-export default async (env) => {
+export default async (env, argv) => {
+  const mode = process.env.NODE_ENV || 'development';
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+  const config = commonConfig({__dirname, mode});
+
   return {
-    mode: 'development',
+    mode,
 
     entry: {
-      app: path.join(__dirname, 'src/js/entry/app.js'),
-      catalog: path.join(__dirname, 'src/js/entry/catalog.js'),
+      app: [path.join(__dirname, 'src/js/entry/app.js'), config.scssEntry],
+      catalog: [path.join(__dirname, 'src/js/entry/catalog.js'), config.scssEntry],
     },
 
     output: {
       clean: true,
+      filename: '[name].bundle.js',
+      path: `${__dirname}${mode === 'production' ? '/build' : '/dist'}`,
     },
 
     module: {
       rules: [
-        {
-          test: /\.html$/,
-          use: [
-            {
-              loader: "handlebars-loader",
-              options: {
-                rootRelative: path.join(__dirname, './src/html/'),
-                partialDirs: [
-                  path.join(__dirname, 'src/html/content', '*', '*.html'),
-                  path.join(__dirname, 'src/html/module', '*', '*.html'),
-                ]
-              }
-            }
-          ]
-        }
+        htmlLoadersConfig({__dirname, mode}),
+        styleLoadersConfig({__dirname, mode}),
       ],
     },
 
-    plugins: [...await htmlConfig()],
+    plugins: [...await htmlPluginsConfig(), ...stylePluginsConfig({mode})],
   }
 }
