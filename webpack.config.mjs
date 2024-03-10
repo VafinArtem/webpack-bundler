@@ -6,6 +6,7 @@ import htmlLoadersConfig from "./webpack-config/html-loaders-config.mjs";
 import styleLoadersConfig from "./webpack-config/style-loaders-config.mjs";
 import commonConfig from "./webpack-config/common-config.mjs";
 import entryConfig from "./webpack-config/entry-config.mjs";
+import copyPluginsConfig from "./webpack-config/copy-plugins-config.mjs";
 
 export default async () => {
   const mode = process.env.NODE_ENV || 'development';
@@ -22,7 +23,7 @@ export default async () => {
     output: {
       clean: true,
       filename: '[name].bundle.js',
-      path: `${__dirname}${mode === 'production' ? '/build' : '/dist'}`,
+      path: path.join(__dirname, `${mode === 'production' ? '/build' : '/dist'}`),
     },
 
     module: {
@@ -32,6 +33,10 @@ export default async () => {
       ],
     },
 
-    plugins: [...await htmlPluginsConfig(), ...stylePluginsConfig({mode})],
+    plugins: [
+      ...await htmlPluginsConfig(),
+      ...stylePluginsConfig({mode}),
+      ...copyPluginsConfig({mode, __dirname}),
+    ],
   }
 }
