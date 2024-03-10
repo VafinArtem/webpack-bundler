@@ -14,7 +14,8 @@ const f = async () => {
           filename: html,
           template: `src/html/entry/${entryCatalog}/${html}`,
           chunks: [entryCatalog],
-          inject: 'body'
+          inject: 'body',
+          minify: false,
         }));
       });
     }
