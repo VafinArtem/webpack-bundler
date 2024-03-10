@@ -5,20 +5,19 @@ import stylePluginsConfig from "./webpack-config/style-plugins-config.mjs";
 import htmlLoadersConfig from "./webpack-config/html-loaders-config.mjs";
 import styleLoadersConfig from "./webpack-config/style-loaders-config.mjs";
 import commonConfig from "./webpack-config/common-config.mjs";
+import entryConfig from "./webpack-config/entry-config.mjs";
 
-export default async (env, argv) => {
+export default async () => {
   const mode = process.env.NODE_ENV || 'development';
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
   const config = commonConfig({__dirname, mode});
+  const entry = await entryConfig({__dirname, config});
 
   return {
     mode,
 
-    entry: {
-      app: [path.join(__dirname, 'src/js/entry/app.js'), config.scssEntry],
-      catalog: [path.join(__dirname, 'src/js/entry/catalog.js'), config.scssEntry],
-    },
+    entry,
 
     output: {
       clean: true,
