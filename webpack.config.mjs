@@ -22,8 +22,8 @@ export default async () => {
 
     output: {
       clean: true,
-      filename: '[name].bundle.js',
-      path: path.join(__dirname, `${mode === 'production' ? '/build' : '/dist'}`),
+      filename: config.enableManyEntries ? '[name].bundle.js' : 'main.bundle.js',
+      path: path.join(__dirname, `${mode === 'production' ? config.outputPath.prod : config.outputPath.dev}`),
     },
 
     module: {

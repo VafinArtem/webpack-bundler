@@ -2,6 +2,10 @@ import fs from 'node:fs/promises';
 import path from "node:path";
 
 const f = async ({__dirname, config}) => {
+  if (!config.enableManyEntries) {
+    return path.join(__dirname, `src/js/app.js`);
+  }
+
   const obj = {};
 
   const getFileName = (file) => {
