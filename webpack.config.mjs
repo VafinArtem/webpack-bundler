@@ -8,11 +8,12 @@ import commonConfig from "./webpack-config/common-config.mjs";
 import entryConfig from "./webpack-config/entry-config.mjs";
 import copyPluginsConfig from "./webpack-config/copy-plugins-config.mjs";
 
-export const config = commonConfig({__dirname});
 
 export default async () => {
   const mode = process.env.NODE_ENV || 'development';
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+  const config = commonConfig({__dirname});
 
   const entry = await entryConfig({__dirname, config});
 
@@ -22,7 +23,11 @@ export default async () => {
     entry,
 
     output: {
-      clean: true,
+      clean: mode !== 'production' ? true : {
+        keep(asset) {
+          return asset.includes('img');
+        },
+      },
       filename: config.enableManyEntries ? '[name].bundle.js' : 'main.bundle.js',
       path: path.join(__dirname, `${mode === 'production' ? config.outputPath.prod : config.outputPath.dev}`),
     },
