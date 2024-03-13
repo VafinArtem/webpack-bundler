@@ -7,6 +7,7 @@ import styleLoadersConfig from "./webpack-config/style-loaders-config.mjs";
 import commonConfig from "./webpack-config/common-config.mjs";
 import entryConfig from "./webpack-config/entry-config.mjs";
 import copyPluginsConfig from "./webpack-config/copy-plugins-config.mjs";
+import webpPluginsConfig from "./webpack-config/webp-plugins-config.mjs";
 
 
 export default async () => {
@@ -43,6 +44,7 @@ export default async () => {
       ...await htmlPluginsConfig(),
       ...stylePluginsConfig({mode}),
       ...copyPluginsConfig({mode, __dirname}),
+      ...webpPluginsConfig({mode})
     ],
   }
 }

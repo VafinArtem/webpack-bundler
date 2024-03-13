@@ -17,7 +17,7 @@ const f = async ({__dirname, config}) => {
     const entryFiles = await fs.readdir(path.join(__dirname, 'src/js/entry'));
 
     entryFiles.forEach((file) => {
-      obj[getFileName(file)] = [path.join(__dirname, `src/js/entry/${file}`), config.scssEntry]
+      obj[getFileName(file)] = [path.join(__dirname, `src/js/entry/${file}`), config.styleEntry]
     })
 
     return obj;
