@@ -23,6 +23,18 @@ export default async () => {
 
     entry,
 
+    devServer: {
+      static: {
+        directory: path.join(__dirname, 'dist'),
+        watch: true,
+      },
+      watchFiles: [path.join(__dirname, 'src')],
+      compress: true,
+      port: 9000,
+      hot: true,
+      open: true
+    },
+
     output: {
       clean: mode !== 'production' ? true : {
         keep(asset) {
