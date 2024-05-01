@@ -6,8 +6,15 @@ export default ({__dirname, mode}) => ({
   use: [
     mode !== "production"
       ? "style-loader"
-      : MiniCssExtractPlugin.loader,
-    "css-loader",
+      : {
+        loader: MiniCssExtractPlugin.loader,
+      },
+    {
+      loader: "css-loader",
+      options: {
+        url: mode !== "production",
+      },
+    },
     {
       loader: "postcss-loader",
       options: {
@@ -18,14 +25,20 @@ export default ({__dirname, mode}) => ({
               {
                 // Options
               },
-            ],
+            ]
           ],
         },
       },
     },
+    mode !== "production"
+      ? null
+      : {
+        loader: 'fix-css-url-loader',
+      },
     {
       loader: "sass-loader",
       options: {
+        sourceMap: true,
         sassOptions: {
           includePaths: [path.join(__dirname, 'src/style/app.scss')],
         },

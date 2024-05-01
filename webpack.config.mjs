@@ -52,6 +52,13 @@ export default async () => {
       ],
     },
 
+    resolveLoader: {
+      modules: [
+        'node_modules',
+        path.resolve(__dirname, 'webpack-loaders')
+      ],
+    },
+
     plugins: [
       ...await htmlPluginsConfig(),
       ...stylePluginsConfig({mode}),

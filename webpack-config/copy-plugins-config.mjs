@@ -6,5 +6,15 @@ export default ({__dirname, mode}) => {
     patterns: [
       { from: path.join(__dirname, "src/assets"), to: path.join(__dirname, "dist"), force: true, noErrorOnMissing: true },
     ],
-  }) : null]
+  }) : new CopyPlugin({
+    patterns: [
+      { from: path.join(__dirname, "src/assets"),filter: async (resourcePath) => {
+          if (resourcePath.includes("/img/") && !resourcePath.includes("sprite.svg")) {
+            return false;
+          }
+
+          return true;
+        }, to: path.join(__dirname, "build"), force: true, noErrorOnMissing: true },
+    ],
+  })]
 }

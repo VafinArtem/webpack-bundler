@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Изображения
 export const img = () => {
   return gulp
-  .src(path.join(__dirname, 'src/assets/img/**/*.{jpg,gif,png,jpeg,svg}'))
+  .src([path.join(__dirname, 'src/assets/img/**/*.{jpg,gif,png,jpeg,svg}'), `!${path.join(__dirname, 'src/assets/img/**/sprite.svg')}`])
   .pipe(
     imagemin([
       optipng({optimizationLevel: 3}),
@@ -20,6 +20,7 @@ export const img = () => {
       svgo({
         plugins: [
           {
+            name: "preset-default",
             removeDimensions: true,
           },
         ],
