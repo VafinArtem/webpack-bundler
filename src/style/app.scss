@@ -1,3 +1,17 @@
-body {
-  background-color: red;
-}
+// Примеры подключения модулей из node_modules
+// @use "../../node_modules/flatpickr/dist/flatpickr.css";
+
+// @import "./common/fonts.scss";
+// @import "./common/variables.scss";
+// @import "./common/mixins.scss";
+// @import "./common/extends.scss";
+// @import "./common/global.scss";
+// @import "./common/media-queries.scss";
+
+// blocks
+// @import "./blocks/button.scss";
+// @import "./blocks/container.scss";
+// @import "./blocks/content.scss";
+
+// plugins
+// @import "./plugins/flatpickr.scss";
