@@ -61,7 +61,7 @@ export default async () => {
     },
 
     plugins: [
-      ...await htmlPluginsConfig(),
+      ...await htmlPluginsConfig({config}),
       ...stylePluginsConfig({mode}),
       ...copyPluginsConfig({mode, __dirname}),
       ...webpPluginsConfig({mode}),
