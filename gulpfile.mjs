@@ -12,11 +12,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Изображения
 export const img = () => {
   return gulp
-  .src([path.join(__dirname, 'src/assets/img/**/*.{jpg,gif,png,jpeg,svg}'), `!${path.join(__dirname, 'src/assets/img/**/sprite.svg')}`])
+  .src([path.join(__dirname, 'src/assets/img/**/*.{jpg,png,jpeg,svg}'), `!${path.join(__dirname, 'src/assets/img/**/sprite.svg')}`])
   .pipe(
     imagemin([
-      optipng({optimizationLevel: 3}),
-      mozjpeg({quality: 90, progressive: true}),
       svgo({
         plugins: [
           {
@@ -25,6 +23,8 @@ export const img = () => {
           },
         ],
       }),
+      optipng({optimizationLevel: 3}),
+      mozjpeg({quality: 90, progressive: true}),
     ]),
   )
   .pipe(gulp.dest(path.join(__dirname, 'build/img')));
@@ -33,7 +33,7 @@ export const img = () => {
 // Webp
 export const webpImages = () => {
   return gulp
-  .src(path.join(__dirname, 'src/assets/img/**/*.{jpg,gif,png,jpeg,svg}'))
+  .src(path.join(__dirname, 'src/assets/img/**/*.{jpg,gif,png,jpeg}'))
   .pipe(webp({quality: 90}))
   .pipe(gulp.dest(path.join(__dirname, 'build/img')));
 };

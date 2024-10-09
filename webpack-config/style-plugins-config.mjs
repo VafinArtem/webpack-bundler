@@ -6,7 +6,7 @@ const f = ({mode}) => {
   }
 
   return [new MiniCssExtractPlugin({
-    filename: 'style.css'
+    filename: 'css/style.css'
   })]
 };
 

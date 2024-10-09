@@ -1,5 +1,5 @@
 import path from "node:path";
-import {fileURLToPath} from 'node:url';
+import {fileURLToPath} from "node:url";
 import htmlPluginsConfig from "./webpack-config/html-plugins-config.mjs";
 import stylePluginsConfig from "./webpack-config/style-plugins-config.mjs";
 import htmlLoadersConfig from "./webpack-config/html-loaders-config.mjs";
@@ -8,10 +8,10 @@ import commonConfig from "./webpack-config/common-config.mjs";
 import entryConfig from "./webpack-config/entry-config.mjs";
 import copyPluginsConfig from "./webpack-config/copy-plugins-config.mjs";
 import webpPluginsConfig from "./webpack-config/webp-plugins-config.mjs";
-
+import jsLoadersConfig from "./webpack-config/js-loaders-config.mjs";
 
 export default async () => {
-  const mode = process.env.NODE_ENV || 'development';
+  const mode = process.env.NODE_ENV || "development";
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
   const config = commonConfig({__dirname});
@@ -25,28 +25,29 @@ export default async () => {
 
     devServer: {
       static: {
-        directory: path.join(__dirname, 'dist'),
+        directory: path.join(__dirname, "dist"),
         watch: true,
       },
-      watchFiles: [path.join(__dirname, 'src')],
+      watchFiles: [path.join(__dirname, "src")],
       compress: true,
       port: 9000,
       hot: true,
-      open: true
+      open: true,
     },
 
     output: {
-      clean: mode !== 'production' ? true : {
+      clean: mode !== "production" ? true : {
         keep(asset) {
-          return asset.includes('img');
+          return asset.includes("img");
         },
       },
-      filename: config.enableManyEntries ? '[name].bundle.js' : 'main.bundle.js',
-      path: path.join(__dirname, `${mode === 'production' ? config.outputPath.prod : config.outputPath.dev}`),
+      filename: config.enableManyEntries ? "js/[name].bundle.js" : "js/main.bundle.js",
+      path: path.join(__dirname, `${mode === "production" ? config.outputPath.prod : config.outputPath.dev}`),
     },
 
     module: {
       rules: [
+        jsLoadersConfig({__dirname, mode}),
         htmlLoadersConfig({__dirname, mode}),
         styleLoadersConfig({__dirname, mode}),
       ],
@@ -54,8 +55,8 @@ export default async () => {
 
     resolveLoader: {
       modules: [
-        'node_modules',
-        path.resolve(__dirname, 'webpack-loaders')
+        "node_modules",
+        path.resolve(__dirname, "webpack-loaders"),
       ],
     },
 
@@ -63,7 +64,7 @@ export default async () => {
       ...await htmlPluginsConfig(),
       ...stylePluginsConfig({mode}),
       ...copyPluginsConfig({mode, __dirname}),
-      ...webpPluginsConfig({mode})
+      ...webpPluginsConfig({mode}),
     ],
-  }
+  };
 }
